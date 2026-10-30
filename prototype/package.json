@@ -1,0 +1,9 @@
+{
+  "name": "prj-001-visionkit-probe",
+  "version": "0.1.0",
+  "private": true,
+  "description": "PRJ-001 端侧跳绳识别验证原型",
+  "scripts": {
+    "test": "node tests/counting.test.js"
+  }
+}

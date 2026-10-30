@@ -1,0 +1,73 @@
+<view class="page">
+  <view class="camera-wrap">
+    <camera
+      id="camera"
+      class="camera"
+      device-position="front"
+      flash="off"
+      frame-size="medium"
+      resolution="medium"
+      bindinitdone="onCameraReady"
+      binderror="onCameraError"
+    ></camera>
+
+    <view class="count-layer">
+      <text class="count">{{count}}</text>
+      <text class="status">{{statusText}}</text>
+    </view>
+
+    <view wx:if="{{error}}" class="error-layer">
+      <text class="error-text">{{error}}</text>
+      <button size="mini" bindtap="openSettings">打开设置</button>
+    </view>
+  </view>
+
+  <scroll-view scroll-y class="panel">
+    <view class="row">
+      <text class="metric">相机 {{fps}}fps</text>
+      <text class="metric">检测 {{processedFps}}fps</text>
+      <text class="metric">置信 {{anchorScore}}</text>
+    </view>
+
+    <view class="row">
+      <text class="metric">髋 {{hipSignal}}</text>
+      <text class="metric">踝 {{ankleSignal}}</text>
+      <text class="metric">腕 {{wristRange}}</text>
+    </view>
+
+    <view class="row">
+      <text class="metric">校准 {{calibrating ? '中' : '完成'}}</text>
+      <text class="metric">状态 {{airborne ? '腾空' : '着地'}}</text>
+      <text class="metric">躯干 {{bodyHeight}}</text>
+    </view>
+
+    <canvas type="2d" id="debugCanvas" class="debug-canvas"></canvas>
+
+    <view class="buttons">
+      <button size="mini" type="primary" bindtap="toggleRunning">{{running ? '暂停' : '开始'}}</button>
+      <button size="mini" bindtap="resetCounter">重置</button>
+      <button size="mini" bindtap="toggleIndices">{{showIndices ? '隐藏索引' : '显示索引'}}</button>
+      <button size="mini" bindtap="toggleMirror">{{mirrorKeypoints ? '镜像开' : '镜像关'}}</button>
+      <button size="mini" bindtap="exportLog">复制日志</button>
+    </view>
+
+    <view class="slider-row">
+      <text class="slider-label">起跳阈值 {{heightRatioPct}}%</text>
+      <slider min="2" max="15" value="{{heightRatioPct}}" activeColor="#4aa3ff" bindchange="onHeightRatioChange"></slider>
+    </view>
+
+    <view class="slider-row">
+      <text class="slider-label">处理帧率 {{targetFps}}fps</text>
+      <slider min="5" max="20" value="{{targetFps}}" activeColor="#4aa3ff" bindchange="onFpsChange"></slider>
+    </view>
+
+    <view class="switch-row">
+      <text class="slider-label">手腕筛选（实验）</text>
+      <switch checked="{{requireWrist}}" color="#4aa3ff" bindchange="onRequireWristChange"></switch>
+    </view>
+
+    <view class="hint">
+      使用前保持静止约 1 秒完成校准；先启动识别再开始跳绳。复制日志后可粘贴到文件做离线分析。
+    </view>
+  </scroll-view>
+</view>
